@@ -8,21 +8,32 @@ class Calculator {
   }
   // when the user press the AC or clear btn
   clear() {
+    this.result = 0;
     this.first = "";
     this.second = "";
     this.operator = "";
-    this.result = "";
+  }
+  //set result as the first number
+  setFirstNum() {
+    this.first = this.result;
+    this.second = "";
+    this.operator = "";
+    this.result = 0;
+    // console.log(this.first, this.second, this.operator, this.result);
   }
   //calculate
   calculate() {
-    if (this.operator === "+") return (this.result = this.first + this.second);
-    if (this.operator === "-") return (this.result = this.first - this.second);
-    if (this.operator === "X") return (this.result = this.first * this.second);
-    if (this.operator === "/") return (this.result = this.first / this.second);
+    if (this.operator === "+") return (this.result = parseInt(this.first) + parseInt(this.second));
+    if (this.operator === "-") return (this.result = parseInt(this.first) - parseInt(this.second));
+    if (this.operator === "X") return (this.result = parseInt(this.first) * parseInt(this.second));
+    if (this.operator === "/") return (this.result = parseInt(this.first) / parseInt(this.second));
   }
-  //get the result
-  getResult() {
-    return this.result;
+
+  //display the result when = sign is pressed
+  displayResult(result) {
+    const h2 = $("#screen h2");
+    h2.text(result);
+    $("#screen h3").text(result).fadeOut();
   }
   //append the number to the screen
   appendNumber(number) {
@@ -32,16 +43,18 @@ class Calculator {
       const h3 = $("#screen h3");
       this.first += number;
       h2.text(this.first);
-      h3.text("=" + this.first);
+      h3.text("=" + this.first).fadeIn();
     }
     //if there is a selected operator, second number will be concatenated to the passed argument
     else {
       this.second += number;
       const h2 = $("#screen h2");
+      const h3 = $("#screen h3");
+      this.calculate();
       h2.text(this.first + this.operator + $.trim(this.second));
+      h3.text("=" + this.result);
     }
   }
-
   //append operator to the screen
   appendOperator(operator) {
     this.setOperator(operator);
@@ -53,11 +66,6 @@ class Calculator {
     if (this.first !== "" && this.second === "") {
       this.operator = operator;
     }
-  }
-  //display the result
-  displayResult() {
-    const h2 = $("#screen h2");
-    h2.text(this.first + this.operator + this.second);
   }
 }
 
@@ -78,6 +86,15 @@ $(document).ready(function () {
     else if (isOperator(btnValue)) {
       calculator.setOperator(btnValue);
       calculator.appendOperator(btnValue);
+    }
+    //if equals sign
+    else if (btnValue === "=") {
+      calculator.displayResult(calculator.result);
+      calculator.setFirstNum();
+      //if AC button pressed
+    } else if (btnValue === "AC") {
+      calculator.clear();
+      calculator.displayResult(calculator.result);
     }
   });
 });
