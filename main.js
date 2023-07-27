@@ -41,17 +41,26 @@ class Calculator {
       //if there is no selected operator, show the number to h3 as result
       const h2 = $("#screen h2");
       const h3 = $("#screen h3");
-      this.first += number;
-      h2.text(this.first);
-      h3.text("=" + this.first).fadeIn();
+      if (number === "back" && this.first.length > 0) {
+        this.first = this.first.length > 1 ? this.first.slice(0, -1) : "0";
+      } else if (number !== "back") {
+        this.first += number;
+      }
+      h2.text(parseInt(this.first));
+      h3.text(this.first !== "0" ? "=" + parseInt(this.first) : "").fadeIn();
     }
     //if there is a selected operator, second number will be concatenated to the passed argument
     else {
-      this.second += number;
       const h2 = $("#screen h2");
       const h3 = $("#screen h3");
+      if (number === "back" && this.second.length > 0) {
+        this.second = this.second.length > 1 ? this.second.slice(0, -1) : "0";
+      } else if (number !== "back") {
+        this.second += number;
+      }
+
       this.calculate();
-      h2.text(this.first + this.operator + $.trim(this.second)).removeClass("grow");
+      h2.text(this.first + this.operator + this.second).removeClass("grow");
       h3.text("=" + this.result)
         .fadeIn()
         .addClass("grow");
@@ -99,6 +108,8 @@ $(document).ready(function () {
     } else if (btnValue === "AC") {
       calculator.clear();
       calculator.displayResult(calculator.result);
+    } else if (btnValue === "back") {
+      calculator.appendNumber(btnValue);
     }
   });
 });
