@@ -32,7 +32,7 @@ class Calculator {
   //display the result when = sign is pressed
   displayResult(result) {
     const h2 = $("#screen h2");
-    h2.text(result);
+    h2.text(result).addClass("grow");
     $("#screen h3").text(result).fadeOut();
   }
   //append the number to the screen
@@ -51,15 +51,19 @@ class Calculator {
       const h2 = $("#screen h2");
       const h3 = $("#screen h3");
       this.calculate();
-      h2.text(this.first + this.operator + $.trim(this.second));
-      h3.text("=" + this.result);
+      h2.text(this.first + this.operator + $.trim(this.second)).removeClass("grow");
+      h3.text("=" + this.result)
+        .fadeIn()
+        .addClass("grow");
     }
   }
   //append operator to the screen
   appendOperator(operator) {
     this.setOperator(operator);
     const h2 = $("#screen h2");
-    h2.text(this.first + this.operator + this.second);
+    const h3 = $("#screen h3");
+    h2.text(this.first + this.operator + this.second).removeClass("grow");
+    h3.text("=" + this.first).fadeIn();
   }
   //set the operator
   setOperator(operator) {

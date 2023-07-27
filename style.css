@@ -21,14 +21,18 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
+  height: 40%;
   border: none;
   outline: none;
   font-size: 3rem;
   font-weight: 1000;
-  margin-bottom: 2.6rem;
 }
 #screen h3 {
   color: gray;
+}
+#screen .grow {
+  font-size: 7rem;
 }
 .row {
   display: grid;
