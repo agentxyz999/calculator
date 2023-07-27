@@ -31,15 +31,28 @@ class Calculator {
       const h2 = $("#screen h2");
       const h3 = $("#screen h3");
       this.first += number;
-      h2.text($.trim(this.first));
-      h3.text("=" + $.trim(this.first));
+      h2.text(this.first);
+      h3.text("=" + this.first);
     }
     //if there is a selected operator, second number will be concatenated to the passed argument
-    else this.second += number;
+    else {
+      this.second += number;
+      const h2 = $("#screen h2");
+      h2.text(this.first + this.operator + $.trim(this.second));
+    }
+  }
+
+  //append operator to the screen
+  appendOperator(operator) {
+    this.setOperator(operator);
+    const h2 = $("#screen h2");
+    h2.text(this.first + this.operator + this.second);
   }
   //set the operator
   setOperator(operator) {
-    this.operator = operator;
+    if (this.first !== "" && this.second === "") {
+      this.operator = operator;
+    }
   }
   //display the result
   displayResult() {
@@ -49,14 +62,22 @@ class Calculator {
 }
 
 const calculator = new Calculator();
+const isOperator = (btnText) => {
+  const operators = ["+", "-", "/", "X"];
+  return operators.includes(btnText);
+};
 
 $(document).ready(function () {
   $(".btn").click(function () {
-    // console.log($(this).text());
     const btnValue = $(this).text();
     //if the input is a number
     if (parseInt(btnValue) >= 0 && parseInt(btnValue) <= 9) {
       calculator.appendNumber(btnValue);
+    }
+    //if the input is operator
+    else if (isOperator(btnValue)) {
+      calculator.setOperator(btnValue);
+      calculator.appendOperator(btnValue);
     }
   });
 });
